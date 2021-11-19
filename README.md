@@ -89,7 +89,21 @@ where
 ```diff  
 - 1. (eval d e1)  
 + 2. define d x (     )  
-! 3. eval (      ) e2
+! 3. eval (      ) e2  
+```  
+
+# Using Maybe to Handle Errors  
+
+```
+data Maybe t = Nothing | Just t
+```  
+
+We can revise our ```eval``` function to return a value of type ```Maybe Double``` using ```Nothing``` to signal an error.  
+
+```
+eval :: Dict -> Expr -> Maybe Double  
+eval _ (Val x) = Just x  
+eval d (Var i) = find d i  //returns a Maybe type  
 ```
 
 
