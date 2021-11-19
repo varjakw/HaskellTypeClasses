@@ -46,5 +46,20 @@ fromMaybe d Nothing = d
 fromMaybe d (Just a) = a
 ```  
 
+We can extend the expression type "Expr" further to allow expressions with local variable declarations:  
+
+```
+data Expr = Val Double  
+                | Add Expr Expr  
+                | Mul Expr Expr  
+                | Sub Expr Expr  
+                | Dvd Expr Expr  
+                | Var Id   
+                | Def Id Expr Expr 
+```  
+
+The intended meaning of ```Def x e1 e2``` is that ```x``` is in scope in ```e2``` but not in ```e1```: compute value of ```e1``` and assign value to ```x```; then evaluate ```e2``` as overall result.
+                
+
 
 
