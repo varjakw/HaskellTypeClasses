@@ -129,5 +129,6 @@ law3 (Sub (Sub x y) z) = Just Sub (Sub x y) z
 law3 _ = Nothing
 
 law4 :: Expr -> Maybe Expr
-law4 (Sub (Mul x x) (Mul y y)) = Just (Mul (Add x y) (Sub x y))
+law4 (Sub (Mul x1 x2) (Mul y1 y2)) = Just (Mul (Add x1 y1) (Sub x2 y2))
 law4 _ = Nothing
+--for some reason, (Mul x x) gave a conflicting definition error
