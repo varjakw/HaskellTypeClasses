@@ -69,7 +69,7 @@ eval d (Mul x y) = case (n1,n2) of
         n2 = eval d y
 
 eval d (Dvd x y) = case (n1,n2) of
-      (Right n1,Right n2) -> if n2 == 0.0 then Left "error: division by zero" else Right (n1 / n2)
+      (Right n1,Right n2) -> if n2 == 0.0 then Left "div by zero" else Right (n1 / n2)
       (Left n1, _)        -> Left n1
       (_, Left n2)        -> Left n2
     where
