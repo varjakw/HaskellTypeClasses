@@ -57,7 +57,26 @@ v42 = Val 42 ; j42 = Just v42
   -- see test outcomes for the precise format of those messages
 
 eval :: EDict -> Expr -> Either String Double
-eval d e = error "eval NYI"
+eval d (Val v) = v  
+eval d (Var n) = fromJust (find d n)  
+fromJust (Just x) = x  
+
+eval d (Mul x y) = case (eval d x, eval d y) of
+                   (Just m,Just n) -> Just (m*n)
+                   _               -> Nothing
+                   
+eval d (Dvd x y) = case (eval d x, eval d y) of
+                   (Just m,Just n) -> if n==0.0 then Nothing else Just (m/n)
+                   _               -> Nothing
+                   
+eval d (Add x y) = case (eval d x, eval d y) of
+                   (Just m,Just n) -> Just (m+n)
+                   _               -> Nothing
+                  
+eval d (Sub x y) = case (eval d x, eval d y) of
+                   (Just m,Just n) -> Just (m-n)
+                   _               -> Nothing                   
+                   
 
 -- Part 2 : Expression Laws -- (15 test marks, worth 15 Exercise Marks) --------
 
