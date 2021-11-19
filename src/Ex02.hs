@@ -121,11 +121,11 @@ law1 (Add x y) = Just (Add x y)   --x + y = y + z means z = x so just x + y
 law1 _ = Nothing
 
 law2 :: Expr -> Maybe Expr
-law2 (Add (Add x y) z) = Just Add (Add x y) z
+law2 (Add (Add x y) z) = Just Add (Add y z) x
 law2 _ = Nothing
 
 law3 :: Expr -> Maybe Expr
-law3 (Sub (Sub x y) z) = Just Sub (Sub x y) z
+law3 (Sub (Sub x y) z) = Just Sub (Sub y z) x
 law3 _ = Nothing
 
 law4 :: Expr -> Maybe Expr
