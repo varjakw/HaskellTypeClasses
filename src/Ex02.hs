@@ -91,10 +91,7 @@ eval d (Sub x y) = case (n1,n2) of
     where
         n1 = eval d x
         n2 = eval d y                                    
-                   
-eval d (Def v x y)    =  case eval d x of
-    Left z             -> Left z
-    Right z            -> eval (define d v v1) y
+                 
 
 -- Part 2 : Expression Laws -- (15 test marks, worth 15 Exercise Marks) --------
 
@@ -120,13 +117,17 @@ There are many, many laws of algebra that apply to our expressions, e.g.,
 
 
 law1 :: Expr -> Maybe Expr
-law1 e = error "law1 NYI"
+law1 (Add x y) = Just (Add x y)   --x + y = y + z means z = x so just x + y
+law1 _ = Nothing
 
 law2 :: Expr -> Maybe Expr
-law2 e = error "law2 NYI"
+law2 (Add (Add x y) z) = Just Add (Add x y) z
+law2 _ = Nothing
 
 law3 :: Expr -> Maybe Expr
-law3 e = error "law3 NYI"
+law3 (Sub (Sub x y) z) = Just Sub (Sub x y) z
+law3 _ = Nothing
 
 law4 :: Expr -> Maybe Expr
-law4 e = error "law4 NYI"
+law4 (Sub (Mul x x) (Mul y y)) = Just (Mul (Add x y) (Sub x y))
+law4 _ = Nothing
