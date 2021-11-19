@@ -92,6 +92,9 @@ eval d (Sub x y) = case (n1,n2) of
         n1 = eval d x
         n2 = eval d y                                    
                    
+eval d (Def v x y)    =  case eval d x of
+    Left z             -> Left z
+    Right z            -> eval (define d v v1) y
 
 -- Part 2 : Expression Laws -- (15 test marks, worth 15 Exercise Marks) --------
 
