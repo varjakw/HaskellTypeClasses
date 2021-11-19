@@ -57,25 +57,40 @@ v42 = Val 42 ; j42 = Just v42
   -- see test outcomes for the precise format of those messages
 
 eval :: EDict -> Expr -> Either String Double
-eval d (Val v) = v  
-eval d (Var n) = fromJust (find d n)  
-fromJust (Just x) = x  
+eval d (Val v) = Right v
+eval d (Var n) = find d n
 
-eval d (Mul x y) = case (eval d x, eval d y) of
-                   (Just m,Just n) -> Just (m*n)
-                   _               -> Nothing
-                   
-eval d (Dvd x y) = case (eval d x, eval d y) of
-                   (Just m,Just n) -> if n==0.0 then Nothing else Just (m/n)
-                   _               -> Nothing
-                   
-eval d (Add x y) = case (eval d x, eval d y) of
-                   (Just m,Just n) -> Just (m+n)
-                   _               -> Nothing
-                  
-eval d (Sub x y) = case (eval d x, eval d y) of
-                   (Just m,Just n) -> Just (m-n)
-                   _               -> Nothing                   
+eval d (Mul x y) = case (n1,n2) of
+      (Right n1,Right n2) -> Right (n1 * n2)
+      (Left n1, _)        -> Left n1
+      (_, Left n2)        -> Left n2
+    where
+        n1 = eval d x
+        n2 = eval d y
+
+eval d (Dvd x y) = case (n1,n2) of
+      (Right n1,Right n2) -> if n2 == 0.0 then Left "error: division by zero" else Right (n1 / n2)
+      (Left n1, _)        -> Left n1
+      (_, Left n2)        -> Left n2
+    where
+        n1 = eval d x
+        n2 = eval d y
+        
+eval d (Add x y) = case (n1,n2) of
+      (Right n1,Right n2) -> Right (n1 + n2)
+      (Left n1, _)        -> Left n1
+      (_, Left n2)        -> Left n2
+    where
+        n1 = eval d x
+        n2 = eval d y
+               
+eval d (Sub x y) = case (n1,n2) of
+      (Right n1,Right n2) -> Right (n1 - n2)
+      (Left n1, _)        -> Left n1
+      (_, Left n2)        -> Left n2
+    where
+        n1 = eval d x
+        n2 = eval d y                                    
                    
 
 -- Part 2 : Expression Laws -- (15 test marks, worth 15 Exercise Marks) --------
